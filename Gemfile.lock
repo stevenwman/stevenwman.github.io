@@ -311,6 +311,7 @@ DEPENDENCIES
   jemoji
   observer
   ostruct
+  webrick (~> 1.9)
 
 BUNDLED WITH
    2.6.9
