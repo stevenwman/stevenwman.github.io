@@ -1,5 +1,6 @@
 ---
 permalink: /assets/js/open-panel-analytics-setup.js
+title: open-panel-analytics-setup
 ---
 window.op =
   window.op ||

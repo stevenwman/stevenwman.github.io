@@ -1,5 +1,6 @@
 ---
 permalink: /assets/js/photoswipe-setup.js
+title: photoswipe-setup
 ---
 import PhotoSwipeLightbox from "{{ site.third_party_libraries.photoswipe-lightbox.url.js }}";
 import PhotoSwipe from "{{ site.third_party_libraries.photoswipe.url.js }}";

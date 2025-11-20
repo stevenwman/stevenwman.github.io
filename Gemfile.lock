@@ -309,6 +309,7 @@ DEPENDENCIES
   jekyll-toc
   jekyll-twitter-plugin
   jemoji
+  nokogiri
   observer
   ostruct
   webrick (~> 1.9)

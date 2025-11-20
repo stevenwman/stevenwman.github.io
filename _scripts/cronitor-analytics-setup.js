@@ -1,5 +1,6 @@
 ---
 permalink: /assets/js/cronitor-analytics-setup.js
+title: cronitor-analytics-setup
 ---
 window.cronitor =
   window.cronitor ||

@@ -13,21 +13,18 @@
       "studyType": "Doctor of Philosophy",
       "startDate": "2023-08-28",
       "endDate": "????",
-      "courses": ["Intro to Robot Learning", 
-                  "Optimal Control and Reinforcement Learning", 
-                  "Embodied AI Safety",
-                  "Robot Dynamics and Analysis",
-                  "..."]
+      "courses": ["NSF Graduate Research Fellow", 
+                  "Tau Beta Pi Fellow"]
     },
-    {
-      "institution": "Carnegie Mellon University",
-      "location": "Pittsburgh, PA",
-      "url": "https://www.ri.cmu.edu/education/academic-programs/doctoral-robotics-program/",
-      "area": "Robotics",
-      "studyType": "Master of Science",
-      "startDate": "2023-08-27",
-      "endDate": "2025-12-01"
-    },
+    // {
+    //   "institution": "Carnegie Mellon University",
+    //   "location": "Pittsburgh, PA",
+    //   "url": "https://www.ri.cmu.edu/education/academic-programs/doctoral-robotics-program/",
+    //   "area": "Robotics",
+    //   "studyType": "Master of Science",
+    //   "startDate": "2023-08-27",
+    //   "endDate": "2025-12-01"
+    // },
     {
       "institution": "University of California, Sanata Barbara",
       "location": "Santa Barbara, CA",
@@ -39,6 +36,22 @@
       "courses": ["Tau Beta Pi Honor Society", 
                   "American Society of Mechanical Engineers Club", 
                   "UCSB Robotics Club"]
+    }
+  ],
+
+  "awards": [
+    {
+      "title": "National Science Foundation Graduate Research Fellowship",
+      "date": "2025-04",
+      "awarder": "National Science Foundation",
+      "url": "https://www.nsfgrfp.org/"
+    //   "summary": "The Nobel Prizes are five separate prizes that, according to Alfred Nobel's will of 1895, are awarded to 'those who, during the preceding year, have conferred the greatest benefit to humankind.'"
+    },
+    {
+      "title": "Tau Beta Pi Fellowship",
+      "date": "2024-04",
+      "awarder": "Tau Beta Pi Engineering Honor Society",
+      "url": "https://www.tbp.org/fellowships.cfm"
     }
   ],
 
@@ -63,22 +76,6 @@
       "endDate": "2023-08",
       "highlights": ["Designed, assembled, and tested a robotic optical alignment production stand to manufacture flight-level satellite hardware in 8 weeks", 
                      "Implemented and optimized a robot automation procedure to reduce takt time by 50% compared to previous generation stands while achieving micron-precision alignment"]
-    }
-  ],
-
-  "awards": [
-    {
-      "title": "National Science Foundation Graduate Research Fellowship",
-      "date": "2025-04",
-      "awarder": "National Science Foundation",
-      "url": "https://www.nsfgrfp.org/"
-    //   "summary": "The Nobel Prizes are five separate prizes that, according to Alfred Nobel's will of 1895, are awarded to 'those who, during the preceding year, have conferred the greatest benefit to humankind.'"
-    },
-    {
-      "title": "Tau Beta Pi Fellowship",
-      "date": "2024-04",
-      "awarder": "Tau Beta Pi Engineering Honor Society",
-      "url": "https://www.tbp.org/fellowships.cfm"
     }
   ],
 

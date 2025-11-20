@@ -1,5 +1,6 @@
 ---
 permalink: /assets/js/search-data.js
+title: search-data
 ---
 // get the ninja-keys element
 const ninja = document.querySelector('ninja-keys');
@@ -10,7 +11,7 @@ ninja.data = [
     {%- if page.permalink == '/' -%}{%- assign about_title = page.title | strip -%}{%- endif -%}
   {%- endfor -%}
   {
-    id: "nav-{{ about_title | slugify }}",
+  id: "nav-{{ about_title | default: 'home' | slugify }}",
     title: "{{ about_title | truncatewords: 13 }}",
     section: "Navigation",
     handler: () => {
@@ -26,7 +27,7 @@ ninja.data = [
             {
               {%- assign title = child.title | escape | strip -%}
               {%- if child.permalink contains "/blog/" -%}{%- assign url = "/blog/" -%} {%- else -%}{%- assign url = child.permalink -%}{%- endif -%}
-              id: "dropdown-{{ title | slugify }}",
+              id: "dropdown-{{ title | default: 'untitled' | slugify }}",
               title: "{{ title | truncatewords: 13 }}",
               description: "{{ child.description | strip_html | strip_newlines | escape | strip }}",
               section: "Dropdown",
@@ -41,7 +42,7 @@ ninja.data = [
         {
           {%- assign title = p.title | escape | strip -%}
           {%- if p.permalink contains "/blog/" -%}{%- assign url = "/blog/" -%} {%- else -%}{%- assign url = p.url -%}{%- endif -%}
-          id: "nav-{{ title | slugify }}",
+          id: "nav-{{ title | default: 'untitled' | slugify }}",
           title: "{{ title | truncatewords: 13 }}",
           description: "{{ p.description | strip_html | strip_newlines | escape | strip }}",
           section: "Navigation",
@@ -54,9 +55,9 @@ ninja.data = [
   {%- endfor -%}
   {%- if site.posts_in_search -%}
     {%- for post in site.posts -%}
-      {
-        {%- assign title = post.title | escape | strip -%}
-        id: "post-{{ title | slugify }}",
+  {
+  {%- assign title = post.title | escape | strip -%}
+  id: "post-{{ title | default: 'untitled' | slugify }}",
         {% if post.redirect == blank %}
           title: "{{ title | truncatewords: 13 }}",
         {% elsif post.redirect contains '://' %}
@@ -87,7 +88,7 @@ ninja.data = [
           {%- else -%}
             {%- assign title = item.title | newline_to_br | replace: "<br />", " " | replace: "<br/>", " " | strip_html | strip_newlines | escape | strip -%}
           {%- endif -%}
-          id: "{{ collection.label }}-{{ title | slugify }}",
+          id: "{{ collection.label }}-{{ title | default: 'untitled' | slugify }}",
           title: '{{ title | escape | emojify | truncatewords: 13 }}',
           description: "{{ item.description | strip_html | strip_newlines | escape | strip }}",
           section: "{{ collection.label | capitalize }}",

@@ -5,7 +5,7 @@
 title: blank # the website title (if blank, full name will be used instead)
 first_name: Steven
 middle_name:
-last_name: Man (Work In Progress) # the full name of the author, used in the header and footer
+last_name: Man # the full name of the author, used in the header and footer
 contact_note:
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
   A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design.
@@ -47,9 +47,9 @@ repo_trophies:
 
 navbar_fixed: true
 footer_fixed: true
-search_enabled: true
+search_enabled: false
 socials_in_search: true
-posts_in_search: true
+posts_in_search: false
 bib_search: true
 
 # Dimensions
@@ -285,6 +285,11 @@ scholar:
   query: "@*"
   group_by: year
   group_order: descending
+  # Sort bibliography entries by full date (ISO  YYYY-MM-DD) when available.
+  # Options: 'none' (default) or any bibtex key such as 'year', 'author', 'date'
+  sort_by: date
+  # Order used to sort bibliography entries (ascending or descending)
+  order: descending
 
 # Display different badges withs stats for your publications
 # Customize badge behavior in _layouts/bib.liquid
