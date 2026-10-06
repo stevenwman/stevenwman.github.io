@@ -1,0 +1,44 @@
+/*******************************************************************************
+ * Self-hosted fonts.
+ * Libron v0.25 (https://github.com/nicoverbruggen/libron), SIL OFL 1.1.
+ * License: assets/fonts/libron/OFL.txt
+ ******************************************************************************/
+
+$libron-font-path: "../fonts/libron" !default;
+
+@font-face {
+  font-family: "Libron";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("#{$libron-font-path}/Libron-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Libron";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("#{$libron-font-path}/Libron-Italic.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Libron";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("#{$libron-font-path}/Libron-Bold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Libron";
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url("#{$libron-font-path}/Libron-BoldItalic.woff2") format("woff2");
+}
+
+// Overrides the "Roboto" body font set by MDB.
+body {
+  font-family: "Libron", Georgia, "Times New Roman", serif;
+}
