@@ -1,0 +1,10 @@
+{%- comment -%} Prints a "YYYY-MM..." date as "Mon YYYY"; anything else (blank, "????") as "present". {%- endcomment -%}
+{%- assign ym_parts = include.d | slice: 0, 7 | split: '-' -%}
+{%- assign ym_names = 'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec' | split: ',' -%}
+{%- if ym_parts.size == 2 and ym_parts[0].size == 4 -%}
+  {%- assign ym_index = ym_parts[1] | plus: 0 | minus: 1 -%}
+  {{- ym_names[ym_index] }}
+  {{ ym_parts[0] -}}
+{%- else -%}
+  present
+{%- endif -%}

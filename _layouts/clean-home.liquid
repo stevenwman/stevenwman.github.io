@@ -1,0 +1,82 @@
+---
+layout: clean
+---
+<div class="hero" id="hero">
+  <div class="wrap hero-copy">
+    {% if page.eyebrow %}
+      <div class="eyebrow">{{ page.eyebrow }}</div>
+    {% endif %}
+    <h1>
+      {{ site.first_name }}
+      {{ site.last_name }}
+    </h1>
+    {% if page.tagline %}
+      <p class="tag">{{ page.tagline }}</p>
+    {% endif %}
+  </div>
+  <canvas id="bench" role="img" aria-label="Pixel art of a small orange bot riding a two-armed robot beside a table with a burger on it."></canvas>
+</div>
+
+<main class="wrap">
+  <section class="block" id="about">
+    <div class="sec-head">
+      <span class="n">01</span>
+      <h2>About</h2>
+    </div>
+    <div class="about">
+      <div>
+        {{ content }}
+        <div class="links">
+          {% if site.data.socials.email %}
+            <a href="mailto:{{ site.data.socials.email | encode_email }}">Email</a>
+          {% endif %}
+          {% if site.data.socials.github_username %}
+            <a href="https://github.com/{{ site.data.socials.github_username }}">GitHub</a>
+          {% endif %}
+          {% if site.data.socials.scholar_userid %}
+            <a href="https://scholar.google.com/citations?user={{ site.data.socials.scholar_userid }}">Scholar</a>
+          {% endif %}
+          {% if site.data.socials.linkedin_username %}
+            <a href="https://www.linkedin.com/in/{{ site.data.socials.linkedin_username }}">LinkedIn</a>
+          {% endif %}
+          <a href="{{ '/cv/' | relative_url }}">CV</a>
+        </div>
+      </div>
+      {% if page.profile.image %}
+        {% assign pfp = page.profile.image | split: '.' | first %}
+        <picture>
+          <source
+            type="image/webp"
+            srcset="{{ pfp | prepend: '/assets/img/' | append: '-480.webp' | relative_url }} 480w, {{ pfp | prepend: '/assets/img/' | append: '-800.webp' | relative_url }} 800w"
+            sizes="232px"
+          >
+          <img src="{{ page.profile.image | prepend: '/assets/img/' | relative_url }}" alt="Portrait of {{ site.first_name }} {{ site.last_name }}">
+        </picture>
+      {% endif %}
+    </div>
+  </section>
+
+  {% if page.announcements and page.announcements.enabled %}
+    <section class="block" id="news">
+      <div class="sec-head">
+        <span class="n">02</span>
+        <h2>News</h2>
+      </div>
+      {% include clean/news.liquid limit=page.announcements.limit %}
+    </section>
+  {% endif %}
+
+  {% if page.selected_papers %}
+    <section class="block" id="pubs">
+      <div class="sec-head">
+        <span class="n">03</span>
+        <h2>Selected publications</h2>
+        <a class="more" href="{{ '/publications/' | relative_url }}">all publications →</a>
+      </div>
+      <div class="publications">
+        {% bibliography --group_by none --query @*[selected=true]* %}
+      </div>
+    </section>
+  {% endif %}
+</main>
+<script defer src="{{ '/assets/js/feed-bot.js' | relative_url | bust_file_cache }}"></script>

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="{{ site.lang }}">
+  <head>
+    {% if page.redirect %}
+      {% if page.redirect == true %}
+        {% assign redirect = site.baseurl | append: '/' %}
+      {% elsif page.redirect contains '://' %}
+        {% assign redirect = page.redirect %}
+      {% else %}
+        {% assign redirect = page.redirect | relative_url %}
+      {% endif %}
+      <meta http-equiv="refresh" content="3; url={{ redirect }}">
+    {% endif %}
+    {% include metadata.liquid %}
+    <!-- Theme: use the saved choice, otherwise follow the system. Set before first paint. -->
+    <script>
+      (function () {
+        var t = null;
+        try {
+          t = localStorage.getItem('theme');
+        } catch (e) {}
+        if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', t);
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap"
+    >
+    <link rel="stylesheet" href="{{ '/assets/css/clean.css' | relative_url | bust_file_cache }}">
+    {% if site.icon.size <= 4 %}
+      <link
+        rel="shortcut icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>{{ site.icon }}</text></svg>"
+      >
+    {% elsif site.icon != blank %}
+      <link rel="shortcut icon" href="{{ site.icon | prepend: '/assets/img/' | relative_url | bust_file_cache }}">
+    {% endif %}
+    <link rel="canonical" href="{{ page.url | replace: 'index.html', '' | absolute_url }}">
+  </head>
+
+  <body>
+    {% capture author_name %}{{ site.first_name }}{% if site.middle_name %} {{ site.middle_name }}{% endif %} {{ site.last_name }}{% endcapture %}
+    <header class="nav">
+      <div class="wrap">
+        <a class="me" href="{{ '/' | relative_url }}">{{ author_name }}</a>
+        <nav aria-label="Main">
+          <ul>
+            <li>
+              <a
+                {% if page.url == '/' %}
+                  class="on"
+                {% endif %}
+                href="{{ '/' | relative_url }}"
+                >about</a
+              >
+            </li>
+            <li>
+              <a
+                {% if page.url contains '/publications' %}
+                  class="on"
+                {% endif %}
+                href="{{ '/publications/' | relative_url }}"
+                >publications</a
+              >
+            </li>
+            <li>
+              <a
+                {% if page.url contains '/cv' %}
+                  class="on"
+                {% endif %}
+                href="{{ '/cv/' | relative_url }}"
+                >cv</a
+              >
+            </li>
+            <li>
+              <button id="theme-toggle" type="button" title="Switch between light and dark" aria-label="Switch between light and dark">
+                <svg class="moon" viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">
+                  <path fill="currentColor" d="M20.4 14.6A8.5 8.5 0 0 1 9.4 3.6a.75.75 0 0 0-.98-.93A10 10 0 1 0 21.33 15.6a.75.75 0 0 0-.93-.98Z"/>
+                </svg>
+                <svg class="sun" viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">
+                  <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+                  <path stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5.3 5.3l1.7 1.7M17 17l1.7 1.7M5.3 18.7 7 17M17 7l1.7-1.7"/>
+                </svg>
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    {{ content }}
+
+    <footer>
+      <div class="wrap">
+        &copy; {{ site.time | date: '%Y' }}
+        {{ author_name }} · Built with <a href="https://jekyllrb.com/">Jekyll</a> on the
+        <a href="https://github.com/alshedivat/al-folio">al-folio</a> template
+      </div>
+    </footer>
+
+    <script>
+      document.getElementById('theme-toggle').addEventListener('click', function () {
+        var t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', t);
+        try {
+          localStorage.setItem('theme', t);
+        } catch (e) {}
+        document.dispatchEvent(new Event('themechange'));
+      });
+    </script>
+    {% if site.enable_google_analytics %}
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics }}"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+          dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', '{{ site.google_analytics }}');
+      </script>
+    {% endif %}
+  </body>
+</html>

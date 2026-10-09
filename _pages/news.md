@@ -1,7 +1,7 @@
 ---
-layout: page
+layout: clean-page
 title: news
 permalink: /news/
 ---
 
-{% include news.liquid %}
+{% include clean/news.liquid %}

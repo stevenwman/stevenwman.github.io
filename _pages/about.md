@@ -1,8 +1,10 @@
 ---
-layout: about
+layout: clean-home
 title: about
 permalink: /
 slug: home
+eyebrow: PhD student · Robotics Institute · Carnegie Mellon # small line above your name
+tagline: I work on algorithms for agile locomotion and dexterous manipulation. # line under your name
 subtitle:
 # subtitle: <a href='#'>Affiliations</a>. Address. Contacts. Motto. Etc.
 

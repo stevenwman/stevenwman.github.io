@@ -1,0 +1,164 @@
+---
+layout: clean
+---
+{% assign r = site.data.resume %}
+<main class="wrap page cv-page">
+  <header class="page-head">
+    <h1>{{ page.title | upcase }}</h1>
+    {% if page.cv_pdf %}
+      <a
+        class="pdf"
+        {% if page.cv_pdf contains '://' %}
+          href="{{ page.cv_pdf }}"
+        {% else %}
+          href="{{ page.cv_pdf | prepend: 'assets/pdf/' | relative_url }}"
+        {% endif %}
+        target="_blank"
+        rel="noopener noreferrer"
+        >Download PDF ↓</a
+      >
+    {% endif %}
+  </header>
+
+  {% if r.education.size > 0 %}
+    <section class="cv-sec">
+      <div class="sec-head"><h2>Education</h2></div>
+      {% for e in r.education %}
+        <div class="cv-row">
+          <div class="when">
+            {% include clean/ym.liquid d=e.startDate %} – {% include clean/ym.liquid d=e.endDate %}
+            {% if e.location -%}
+              <span>{{ e.location }}</span>
+            {%- endif %}
+          </div>
+          <div>
+            <h3>
+              {% if e.url -%}
+                <a href="{{ e.url }}">{{ e.institution }}</a>
+              {%- else -%}
+                {{- e.institution -}}
+              {%- endif %}
+            </h3>
+            <div class="sub">
+              {{ e.studyType -}}
+              {%- if e.area %}, {{ e.area }}{% endif %}
+            </div>
+            {% if e.courses.size > 0 %}
+              <ul>
+                {% for c in e.courses %}
+                  <li>{{ c }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </section>
+  {% endif %}
+
+  {% if r.awards.size > 0 %}
+    <section class="cv-sec">
+      <div class="sec-head"><h2>Awards</h2></div>
+      {% for a in r.awards %}
+        <div class="cv-row">
+          <div class="when">{% include clean/ym.liquid d=a.date %}</div>
+          <div>
+            <h3>
+              {% if a.url -%}
+                <a href="{{ a.url }}">{{ a.title }}</a>
+              {%- else -%}
+                {{- a.title -}}
+              {%- endif %}
+            </h3>
+            {% if a.awarder %}
+              <div class="sub">{{ a.awarder }}</div>
+            {% endif %}
+            {% if a.summary %}
+              <p>{{ a.summary }}</p>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </section>
+  {% endif %}
+
+  {% if r.work.size > 0 %}
+    <section class="cv-sec">
+      <div class="sec-head"><h2>Work</h2></div>
+      {% comment %} In this data file "position" holds the organisation and "name" the role. {% endcomment %}
+      {% assign jobs = r.work | sort: 'startDate' | reverse %}
+      {% for w in jobs %}
+        <div class="cv-row">
+          <div class="when">
+            {% include clean/ym.liquid d=w.startDate %} – {% include clean/ym.liquid d=w.endDate %}
+            {% if w.location -%}
+              <span>{{ w.location }}</span>
+            {%- endif %}
+          </div>
+          <div>
+            <h3>
+              {% if w.url -%}
+                <a href="{{ w.url }}">{{ w.position }}</a>
+              {%- else -%}
+                {{- w.position -}}
+              {%- endif %}
+            </h3>
+            <div class="sub">{{ w.name }}</div>
+            {% if w.summary %}
+              <p>{{ w.summary }}</p>
+            {% endif %}
+            {% if w.highlights.size > 0 %}
+              <ul>
+                {% for h in w.highlights %}
+                  <li>{{ h }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </section>
+  {% endif %}
+
+  {% if r.skills.size > 0 %}
+    <section class="cv-sec">
+      <div class="sec-head"><h2>Skills</h2></div>
+      {% for s in r.skills %}
+        <div class="cv-row">
+          <div class="when">{{ s.name }}</div>
+          <div class="kw">
+            {% for k in s.keywords -%}
+              <span>{{ k }}</span>
+            {%- endfor %}
+          </div>
+        </div>
+      {% endfor %}
+    </section>
+  {% endif %}
+
+  {% if r.interests.size > 0 %}
+    <section class="cv-sec">
+      <div class="sec-head"><h2>Interests</h2></div>
+      {% for s in r.interests %}
+        <div class="cv-row">
+          <div class="when">{{ s.name }}</div>
+          <div class="kw">
+            {% for k in s.keywords -%}
+              <span>{{ k }}</span>
+            {%- endfor %}
+          </div>
+        </div>
+      {% endfor %}
+    </section>
+  {% endif %}
+
+  {% if r.basics.Languages %}
+    <section class="cv-sec">
+      <div class="sec-head"><h2>Languages</h2></div>
+      <div class="cv-row">
+        <div class="when">Spoken</div>
+        <div>{{ r.basics.Languages }}</div>
+      </div>
+    </section>
+  {% endif %}
+</main>
