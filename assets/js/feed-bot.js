@@ -29,7 +29,6 @@
     // shaded materials, as [outline, shadow, base, light, glint]
     M.arm = dark ? ["#1b1f25", "#3a4049", "#565d68", "#78808c", "#a9b1bc"] : ["#08090a", "#16171a", "#27292e", "#44474e", "#72777f"];
     M.steel = dark ? ["#6b727c", "#9aa1ab", "#c4c9d0", "#e6e9ed", "#ffffff"] : ["#555b63", "#878d96", "#b3b8bf", "#dcdfe4", "#ffffff"];
-    M.bot = ["#964630", "#bd5d3f", "#d97757", "#e9936f", "#f4ad8e"];
     M.table = dark ? ["#1f2825", "#2c3733", "#3a4641", "#50605a", "#50605a"] : ["#9a958a", "#b5b0a6", "#cfcbc2", "#e6e3dc", "#e6e3dc"];
   }
   document.addEventListener("themechange", readPalette);
@@ -557,10 +556,11 @@
     const squash = tele.chomp > 0 ? 1 : 0,
       ox = fx - Math.floor(bw / 2),
       oy = sy - 8 - bh + hop + squash + bounce + sob;
-    for (const k of [0.1, 0.27, 0.68, 0.85]) box(ox + Math.round(bw * k) - 0.25, oy + bh - 1, (grow >= 6 ? 2 : 1) + 0.5, 3 - squash, 0.2, M.bot);
-    box(ox - 1.5, oy + Math.round(bh * 0.4), 2, 2.5, 0.4, M.bot);
-    box(ox + bw - 0.5, oy + Math.round(bh * 0.4), 2, 2.5, 0.4, M.bot);
-    box(ox, oy, bw, bh, 0.8, M.bot);
+    // drawn flat on purpose: plain blocks of one color, no outline or shading, unlike the robot it sits on
+    for (const k of [0.1, 0.27, 0.68, 0.85]) R(ox + Math.round(bw * k), oy + bh, grow >= 6 ? 2 : 1, 2 - squash, pal.bot);
+    R(ox, oy, bw, bh, pal.bot);
+    R(ox - 1, oy + Math.round(bh * 0.4), 1, 2, pal.bot);
+    R(ox + bw, oy + Math.round(bh * 0.4), 1, 2, pal.bot);
     const watching =
       E && E !== "creak" && E !== "crash" && tele.ufo ? tele.ufo.x : f.state === "held" || f.state === "eating" ? fc.x : act ? mouse.x : fx;
     const look = clamp(Math.round((watching - fx) / 22), -1, 1);
@@ -583,11 +583,7 @@
         R(ex, ey, ew, 1, pal.botEye);
         R(ex + ew, ey + 1, 1, 1, pal.botEye);
       } else if (!reduce && now % 4 < 0.12) R(ex + look, ey + 1, ew, 1, pal.botEye);
-      else {
-        R(ex + look, ey, ew, eh, pal.botEye);
-        ctx.fillStyle = "#f6e9e2";
-        ctx.fillRect(ex + look, ey, 0.5, 0.5);
-      } // open eye with a glint
+      else R(ex + look, ey, ew, eh, pal.botEye);
     });
     const hungry = f.state === "eating" || (f.state !== "gone" && Math.hypot(fc.x - mouth.x, fc.y - mouth.y) < 15);
     const mw = 3 + Math.floor(grow / 4),

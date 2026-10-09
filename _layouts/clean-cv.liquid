@@ -84,7 +84,7 @@ layout: clean
 
   {% if r.work.size > 0 %}
     <section class="cv-sec">
-      <div class="sec-head"><h2>Work</h2></div>
+      <div class="sec-head"><h2>Industry</h2></div>
       {% comment %} In this data file "position" holds the organisation and "name" the role. {% endcomment %}
       {% assign jobs = r.work | sort: 'startDate' | reverse %}
       {% for w in jobs %}
