@@ -384,6 +384,7 @@ ul.task-list input[type="checkbox"] {
 }
 
 #light-toggle,
+#font-toggle,
 #search-toggle {
   padding: 0;
   border: 0;
@@ -393,6 +394,13 @@ ul.task-list input[type="checkbox"] {
   &:hover {
     color: var(--global-hover-color);
   }
+}
+
+// same placement as the #light-toggle icons (see _themes.scss)
+#font-toggle i {
+  padding-left: 10px;
+  padding-top: 12px;
+  display: block;
 }
 
 // Social (bottom)
@@ -757,10 +765,13 @@ footer.sticky-bottom {
       }
 
       .title {
-        font-weight: bolder;
+        font-weight: normal;
       }
 
       .author {
+        // slightly greyed so the title stands out; the site owner's name (> em) keeps the full text color
+        color: color-mix(in srgb, var(--global-text-color) 50%, var(--global-text-color-light));
+
         a {
           border-bottom: 1px dashed var(--global-theme-color);
 

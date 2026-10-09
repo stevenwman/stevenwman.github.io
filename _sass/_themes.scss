@@ -6,19 +6,19 @@
 
 :root {
   color-scheme: light;
-  --global-bg-color: #{$white-color};
-  --global-code-bg-color: #{$code-bg-color-light};
-  --global-text-color: #{$black-color};
-  --global-text-color-light: #{$grey-color};
-  --global-theme-color: #{$purple-color};
-  --global-hover-color: #{$purple-color};
+  --global-bg-color: #{$alabaster-color};
+  --global-code-bg-color: #{rgba($toffee-color, 0.08)};
+  --global-text-color: #{$juniper-ink-color};
+  --global-text-color-light: #7d7059;
+  --global-theme-color: #{$toffee-color};
+  --global-hover-color: #{$toffee-color-dark};
   --global-hover-text-color: #{$white-color};
   --global-footer-bg-color: #{$grey-color-dark};
   --global-footer-text-color: #{$grey-color-light};
   --global-footer-link-color: #{$white-color};
   --global-distill-app-color: #{$grey-color};
-  --global-divider-color: rgba(0, 0, 0, 0.1);
-  --global-card-bg-color: #{$white-color};
+  --global-divider-color: #{rgba($toffee-color-dark, 0.22)};
+  --global-card-bg-color: #{$alabaster-color-light};
   --global-highlight-color: #{$red-color-dark};
   --global-back-to-top-bg-color: rgba(
     #{color.channel($black-color, "red", $space: rgb)},
@@ -27,8 +27,16 @@
     0.4
   );
   --global-back-to-top-text-color: #{$white-color};
-  --global-newsletter-bg-color: #{$white-color};
-  --global-newsletter-text-color: #{$black-color};
+  --global-newsletter-bg-color: #{$alabaster-color-light};
+  --global-newsletter-text-color: #{$juniper-ink-color};
+
+  // Notebook look (see _notebook.scss)
+  --global-heading-color: #{$juniper-color-light};
+  --global-nav-bg-color: #{rgba($alabaster-color, 0.93)};
+  --paper-dot-color: #{rgba($toffee-color-dark, 0.26)};
+  --paper-rule-color: #{rgba($toffee-color, 0.45)};
+  --paper-accent-color: #{$toffee-color};
+  --paper-print-border-color: #fbf6ea;
 
   --global-tip-block: #42b983;
   --global-tip-block-bg: #e2f5ec;
@@ -78,19 +86,19 @@
 
 html[data-theme="dark"] {
   color-scheme: dark;
-  --global-bg-color: #{$grey-color-dark};
-  --global-code-bg-color: #{$code-bg-color-dark};
-  --global-text-color: #{$grey-color-light};
-  --global-text-color-light: #{$grey-color};
-  --global-theme-color: #{$cyan-color};
-  --global-hover-color: #{$cyan-color};
+  --global-bg-color: #{$juniper-color};
+  --global-code-bg-color: #0b1c17;
+  --global-text-color: #e6d9c0;
+  --global-text-color-light: #93a08f;
+  --global-theme-color: #{$brass-color};
+  --global-hover-color: #ecd4a0;
   --global-hover-text-color: #{$white-color};
   --global-footer-bg-color: #{$grey-color-light};
   --global-footer-text-color: #{$grey-color-dark};
   --global-footer-link-color: #{$black-color};
   --global-distill-app-color: #{$grey-color-light};
-  --global-divider-color: #424246;
-  --global-card-bg-color: #{$grey-900};
+  --global-divider-color: #{rgba($alabaster-color, 0.18)};
+  --global-card-bg-color: #153027;
   --global-back-to-top-bg-color: rgba(
     #{color.channel($white-color, "red", $space: rgb)},
     #{color.channel($white-color, "green", $space: rgb)},
@@ -98,8 +106,16 @@ html[data-theme="dark"] {
     0.5
   );
   --global-back-to-top-text-color: #{$black-color};
-  --global-newsletter-bg-color: #{$grey-color-light};
-  --global-newsletter-text-color: #{$grey-color-dark};
+  --global-newsletter-bg-color: #153027;
+  --global-newsletter-text-color: #e6d9c0;
+
+  // Notebook look (see _notebook.scss)
+  --global-heading-color: #efe3cb;
+  --global-nav-bg-color: #{rgba($juniper-color, 0.92)};
+  --paper-dot-color: #{rgba($alabaster-color, 0.13)};
+  --paper-rule-color: #{rgba($toffee-color-light, 0.55)};
+  --paper-accent-color: #{$toffee-color-light};
+  --paper-print-border-color: #e9dcc3;
 
   --global-tip-block: #42b983;
   --global-tip-block-bg: #e2f5ec;

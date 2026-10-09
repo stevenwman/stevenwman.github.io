@@ -38,7 +38,17 @@ $libron-font-path: "../fonts/libron" !default;
   src: url("#{$libron-font-path}/Libron-BoldItalic.woff2") format("woff2");
 }
 
-// Overrides the "Roboto" body font set by MDB.
+// Overrides the "Roboto" body font set by MDB. MDB also sets the body weight to
+// 300, which Libron lacks: it would render as Regular and make "bolder" (titles,
+// <strong>) resolve to 400, i.e. the same face. Use 400 so "bolder" means Bold.
 body {
   font-family: "Libron", Georgia, "Times New Roman", serif;
+  font-weight: 400;
+}
+
+// Sans-serif alternative chosen with the navbar font toggle (assets/js/font.js).
+// These are the theme's original MDB values.
+html[data-font="sans"] body {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
 }

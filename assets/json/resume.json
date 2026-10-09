@@ -26,7 +26,7 @@
     //   "endDate": "2025-12-01"
     // },
     {
-      "institution": "University of California, Sanata Barbara",
+      "institution": "University of California, Santa Barbara",
       "location": "Santa Barbara, CA",
       "url": "https://me.ucsb.edu/",
       "area": "Mechanical Engineering",
@@ -99,7 +99,7 @@
       "icon": "fa-solid fa-hashtag",
       "keywords": [
         "Python (PyTorch, JAX, NumPy)",
-        "C++ (Arduion)",
+        "C++ (Arduino)",
         "MATLAB",
         "Julia",
         "CAD (Onshape, SolidWorks, Siemens NX)"

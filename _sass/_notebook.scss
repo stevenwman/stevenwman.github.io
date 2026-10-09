@@ -1,0 +1,275 @@
+/*******************************************************************************
+ * Notebook look: dot-grid paper with a margin rule, a taped-in photo and quiet,
+ * bookish details. Colors come from the juniper / toffee / alabaster palette in
+ * _variables.scss and are assigned per light/dark theme in _themes.scss.
+ ******************************************************************************/
+
+@use "sass:math";
+
+// Paper
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-size: 1.06rem;
+  line-height: 1.6;
+
+  // margin rule just left of the text column (off-screen on narrow windows), over a dot grid.
+  // The offsets are precomputed: PurgeCSS strips the spaces around "+" inside calc(), which
+  // invalidates the whole declaration.
+  $rule-offset: math.div($max-content-width, 2) + 24px;
+  $rule-start: calc(50% - #{$rule-offset});
+  $rule-end: calc(50% - #{$rule-offset - 1px});
+  background-image:
+    linear-gradient(
+      90deg,
+      transparent #{$rule-start},
+      var(--paper-rule-color) #{$rule-start},
+      var(--paper-rule-color) #{$rule-end},
+      transparent #{$rule-end}
+    ),
+    radial-gradient(var(--paper-dot-color) 1px, transparent 1.3px);
+  background-size:
+    100% 100%,
+    22px 22px;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--global-theme-color) 30%, transparent);
+}
+
+.navbar {
+  background-color: var(--global-nav-bg-color);
+  backdrop-filter: blur(6px);
+  opacity: 1;
+}
+
+// Footer sits at the end of the page (or the bottom of the window on short pages)
+
+body > footer.sticky-bottom {
+  margin-top: auto !important;
+  padding-top: 24px;
+  padding-bottom: 24px;
+  font-size: 0.8rem;
+
+  .container {
+    color: var(--global-text-color-light);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+
+    &:hover {
+      color: var(--global-theme-color);
+    }
+  }
+}
+
+body > .container[role="main"] {
+  margin-bottom: 3rem;
+}
+
+// Headings
+
+.post .post-title,
+.post article h2:not(.bibliography),
+.cv .card .card-title {
+  color: var(--global-heading-color);
+}
+
+.post .post-title span {
+  color: inherit;
+}
+
+.post article h2:not(.bibliography) {
+  font-style: italic;
+  font-size: 1.9rem;
+  margin: 2.6rem 0 1rem;
+
+  &::after {
+    content: "";
+    display: block;
+    width: 2.6rem;
+    height: 3px;
+    margin-top: 0.35rem;
+    border-radius: 2px;
+    background: var(--paper-accent-color);
+  }
+}
+
+// Links inside running text: ink-colored with an accent underline
+
+.post article p a,
+.post .post-description a,
+.news table.table td a {
+  color: var(--global-text-color);
+  text-decoration: underline;
+  text-decoration-color: var(--global-theme-color);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+
+  &:hover {
+    color: var(--global-theme-color);
+  }
+}
+
+// Profile photo as a taped-in print
+
+.profile img {
+  padding: 7px;
+  background: var(--paper-print-border-color);
+  border-radius: 2px !important;
+  transform: rotate(1.6deg);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.25),
+    0 10px 22px -10px rgba(0, 0, 0, 0.5) !important;
+}
+
+@media (max-width: 575.98px) {
+  .profile.float-right,
+  .profile.float-left {
+    float: none !important;
+    width: 58%;
+    margin: 0.5rem auto 1.75rem;
+  }
+}
+
+// News
+
+.news {
+  // the theme's scroll box clips the list on phones
+  .table-responsive {
+    max-height: none !important;
+  }
+
+  // Bootstrap's .table-dark (added by theme.js in dark mode) forces white text
+  table.table,
+  table.table td {
+    color: var(--global-text-color);
+  }
+
+  table th {
+    font-weight: 400;
+    font-style: italic;
+    color: var(--global-text-color-light);
+    white-space: nowrap;
+  }
+
+  table td,
+  table th {
+    padding-bottom: 0.55rem;
+  }
+}
+
+// Publications
+
+.publications {
+  ol.bibliography {
+    // each entry sits on its own index card, like the CV sections
+    > li {
+      background-color: var(--global-card-bg-color);
+      border: 1px solid var(--global-divider-color);
+      border-radius: 3px;
+      padding: 1rem 0.6rem 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    li {
+      .preview {
+        border-radius: 2px !important;
+        box-shadow: none !important;
+        outline: 1px solid var(--global-divider-color);
+        // lets white figure backgrounds take on the paper color
+        mix-blend-mode: multiply;
+      }
+
+      .links {
+        a.btn {
+          border: 0;
+          margin: 0;
+          padding: 0 1rem 0 0;
+          font-size: 0.92rem;
+          text-transform: none;
+          color: var(--global-theme-color);
+
+          &::after {
+            content: " \2197";
+            font-size: 0.8em;
+          }
+
+          &:hover {
+            border: 0;
+            color: var(--global-hover-color);
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+}
+
+html[data-theme="dark"] .publications ol.bibliography li .preview {
+  mix-blend-mode: normal;
+  filter: brightness(0.9);
+}
+
+@media (max-width: 575.98px) {
+  .publications ol.bibliography li .abbr {
+    flex: 0 0 55%;
+    max-width: 55%;
+  }
+}
+
+// Social icons
+
+.social {
+  margin-top: 2.5rem;
+
+  .contact-icons {
+    font-size: 1.7rem;
+
+    a {
+      margin: 0 0.45rem;
+    }
+  }
+}
+
+// CV: index cards with plain dates in place of shadowed cards and colored badges
+
+.cv {
+  .card {
+    box-shadow: none;
+    border-radius: 3px;
+
+    .card-title {
+      font-style: italic;
+    }
+
+    .list-group-item {
+      .badge {
+        color: var(--global-text-color-light) !important;
+        background-color: transparent !important;
+        box-shadow: none;
+        font-size: 0.8rem;
+        font-style: italic;
+        font-weight: 400 !important;
+        text-transform: none !important;
+      }
+    }
+  }
+}
+
+// Bootstrap's .table-dark (added to every table by theme.js in dark mode) forces white text
+.table-dark {
+  color: var(--global-text-color);
+}
+
+// let the text fill the publication card instead of stopping at two thirds
+@media (min-width: 576px) {
+  .publications ol.bibliography li .row > .col-sm-8 {
+    flex: 1 1 0;
+    max-width: 100%;
+  }
+}
