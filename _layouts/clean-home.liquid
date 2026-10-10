@@ -3,24 +3,24 @@ layout: clean
 ---
 <div class="hero" id="hero">
   <div class="wrap hero-copy">
-    {% if page.eyebrow %}
-      <div class="eyebrow">{{ page.eyebrow }}</div>
-    {% endif %}
     <h1>
       {{ site.first_name }}
       {{ site.last_name }}
     </h1>
-    {% if page.tagline %}
-      <p class="tag">{{ page.tagline }}</p>
+    {% if page.eyebrow %}
+      <div class="eyebrow">{{ page.eyebrow }}</div>
     {% endif %}
   </div>
-  <canvas id="bench" role="img" aria-label="Pixel art of a small orange bot riding a two-armed robot beside a table with a burger on it."></canvas>
+  <canvas
+    id="bench"
+    role="img"
+    aria-label="Pixel art of a small orange bot riding a two-armed robot beside a table with a graphics card on it."
+  ></canvas>
 </div>
 
 <main class="wrap">
   <section class="block" id="about">
     <div class="sec-head">
-      <span class="n">01</span>
       <h2>About</h2>
     </div>
     <div class="about">
@@ -59,7 +59,6 @@ layout: clean
   {% if page.announcements and page.announcements.enabled %}
     <section class="block" id="news">
       <div class="sec-head">
-        <span class="n">02</span>
         <h2>News</h2>
       </div>
       {% include clean/news.liquid limit=page.announcements.limit %}
@@ -69,7 +68,6 @@ layout: clean
   {% if page.selected_papers %}
     <section class="block" id="pubs">
       <div class="sec-head">
-        <span class="n">03</span>
         <h2>Selected publications</h2>
         <a class="more" href="{{ '/publications/' | relative_url }}">all publications →</a>
       </div>

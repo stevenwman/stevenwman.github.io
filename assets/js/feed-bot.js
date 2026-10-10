@@ -1,5 +1,5 @@
 // Pixel-art Easter egg in the hero: a small bot rides a two-armed robot. Steer the nearer arm with
-// the cursor, hold to grip the burger, and feed the bot; it grows with every burger, and the fifth one is one too many.
+// the cursor, hold to grip the graphics card, and feed the bot; it grows with every GPU, and the fifth one is one too many.
 (() => {
   "use strict";
   const root = document.documentElement;
@@ -35,7 +35,7 @@
 
   // ---------- pixel primitives ----------
   // The scene is laid out in units. The canvas has Z x Z pixels per unit: flat details are drawn as whole units,
-  // while the robot, the bot and the burger are shaded pixel by pixel.
+  // while the robot and the graphics card are drawn pixel by pixel.
   const Z = 2;
   const R = (x, y, w, h, c) => {
     ctx.fillStyle = c;
@@ -130,17 +130,17 @@
   const anchorX = () => (cv.getBoundingClientRect().width < 760 ? Math.round(W / 2) : Math.round(W * 0.71));
   const groundY = () => H - 9;
 
-  // ---------- the scene: feed the bot (it rides a two-armed robot; hand it the burger and it grows) ----------
+  // ---------- the scene: feed the bot (it rides a two-armed robot; hand it the GPU and it grows) ----------
   const L1 = 18,
     L2 = 15,
     GR = 6,
-    BUN = "#d9903d";
+    CRUMB = "#aab0b8";
   const tele = {
     arms: [
       { a1: 2.2, a2: 1.2, g: 0 },
       { a1: 0.9, a2: 1.9, g: 0 },
     ],
-    food: { x: 0, y: 0, vy: 0, state: "free", held: -1, bites: 0, t: 0, lost: 0 },
+    food: { x: 0, y: 0, vy: 0, state: "free", held: -1, bites: 0, t: 0, lost: 0, flip: false, ox: 0, oy: 0 },
     crumbs: [],
     bits: [],
     tears: [],
@@ -161,7 +161,7 @@
     ufo: null,
   };
   const FULL = 5,
-    DROP = 40; // burgers until the robot gives way, and how far the upper body falls when it does
+    DROP = 40; // GPUs until the robot gives way, and how far the upper body falls when it does
   // The gripper is rigid with the forearm, so to the solver the arm is a two-link chain from shoulder to fingertip.
   const LA = L1,
     LB = L2 + GR,
@@ -216,40 +216,55 @@
     }
     capsule(p.w.x - n.x * 2.4, p.w.y - n.y * 2.4, p.w.x + n.x * 2.4, p.w.y + n.y * 2.4, 2.1, M.arm); // gripper motor, lying across the wrist
   }
-  const BURGER = [
-    "...oooooooo...",
-    "..oBBBsBBBBo..",
-    ".oBBsBBBBsBBo.",
-    "oBBBBBBBBBBBBo",
-    "obbbbbbbbbbbbo",
-    "GgGGgGGGgGGgGG",
-    "cccCcccccCcccc",
-    "pPPPPPPPPPPPPp",
-    "pppppppppppppp",
-    "oBBBBBBBBBBBBo",
-    ".obbbbbbbbbbo.",
-    "..oooooooooo..",
+  // what the bot eats: a graphics card after the RTX 5090 Founders Edition. Chamfered gunmetal frame, two fans,
+  // the X brace between them, a lit logo strip, the steel bracket at one end and the connector underneath.
+  const GPU = [
+    "vv...kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk...",
+    "vv..keeeeeeeeeeeewwwwwwwwwweeeeeeeeeek..",
+    "vv.keeeebbbbbbeeeeeeeeeeeeeebbbbbbeeeek.",
+    "vvkeemmbbbbggbbmmxxmmmmmxmmbbbbggbbmmeek",
+    "vVkeembggggbgbbbmmxxmmmxxmbggggbgbbbmeek",
+    "vVkeebbbbbbbbgbgbmmxxmxxmbbbbbbbbgbgbeek",
+    "vvkeebbggbhhbgbgbmmxxmxxmbbggbhhbgbgbeek",
+    "vVkeebgbbhhhhbgbbmmmxxxmmbgbbhhhhbgbbeek",
+    "vVkeebgbbhhhhbgbbmmmxxxmmbgbbhhhhbgbbeek",
+    "vvkeebbgbbhhbbbgbmmxxmxxmbbgbbhhbbbgbeek",
+    "vVkeebbgbgbbggggbmmxxmxxmbbgbgbbggggbeek",
+    "vVkeembggbgbbbbbmmxxmmmxxmbggbgbbbbbmeek",
+    "vvkeemmbgbbgggbmmxxmmmmmxmmbgbbgggbmmeek",
+    "vv.keeeebbbbbbeeeeeeeeeeeeeebbbbbbeeeek.",
+    "vv..keeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeek..",
+    "vv...kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk...",
+    "vv......yyyy..yyyyyyyyyyyyyyyy..........",
+    "vv......yYyY..yYyYyYyYyYyYyYyY..........",
   ];
-  const BURGER_INK = {
-    o: "#8a5522",
-    B: "#e3a34c",
-    b: "#cf8a36",
-    s: "#fbe9c4",
-    G: "#6cbf58",
-    g: "#3f8f3c",
-    c: "#f6c93a",
-    C: "#fbe07a",
-    P: "#7a4526",
-    p: "#52290f",
+  const GPU_INK = {
+    k: "#0e0f11",
+    e: "#7c828b",
+    m: "#2b2e33",
+    w: "#f4f6f8",
+    b: "#101114",
+    g: "#4a4f57",
+    h: "#a3a9b2",
+    x: "#8b9199",
+    y: "#e3b341",
+    Y: "#b98a22",
+    v: "#b9bec6",
+    V: "#6f757e",
   };
-  function burger(x, y, bites) {
-    const w = Math.round(14 - bites * 4.67),
+  const GPX = GPU[0].length, // sprite size in pixels...
+    GW = GPX / Z, // ...and in scene units
+    GH = GPU.length / Z;
+  const gpuLeft = (bites) => Math.round(GPX * (1 - bites / 3)); // pixel columns left after so many bites
+  // flip: the card is being eaten from its left end instead of its right
+  function gpu(x, y, bites, flip) {
+    const w = gpuLeft(bites),
       x0 = Math.round(x * Z),
       y0 = Math.round(y * Z);
-    BURGER.forEach((line, r) => {
-      for (let c = 0; c < w; c++)
+    GPU.forEach((line, r) => {
+      for (let c = flip ? GPX - w : 0; c < (flip ? GPX : w); c++)
         if (line[c] !== ".") {
-          ctx.fillStyle = BURGER_INK[line[c]];
+          ctx.fillStyle = GPU_INK[line[c]];
           ctx.fillRect((x0 + c) / Z, (y0 + r) / Z, 1 / Z, 1 / Z);
         }
     });
@@ -324,8 +339,9 @@
       f = tele.food;
     const spawn = (drop) => {
       const s = Math.random() < 0.5 ? -1 : 1;
-      f.x = fx + s * (13 + Math.round(Math.random() * 10)) - 3;
-      f.y = drop ? ty - 34 : ty - 6;
+      f.x = fx + s * (17 + Math.round(Math.random() * 5)) - GW / 2;
+      f.y = drop ? ty - 34 : ty - GH;
+      f.flip = false;
       f.vy = 0;
       f.state = "free";
       f.held = -1;
@@ -335,23 +351,23 @@
     };
     if (!tele.init) {
       spawn(false);
-      f.x = fx - 22;
+      f.x = fx - 20 - GW / 2;
       tele.init = true;
     }
     if (tele.fx && (fx !== tele.fx || gy !== tele.gy)) {
       f.x += fx - tele.fx;
       f.y += gy - tele.gy;
-    } // the canvas was resized: move the burger with the scene
+    } // the canvas was resized: move the GPU with the scene
     tele.fx = fx;
     tele.gy = gy;
 
-    // ----- finale: the last burger is one too many. creak -> crash -> cry -> saucer arrives -> scan -> rebuild -> saucer leaves
+    // ----- finale: the last GPU is one too many. creak -> crash -> cry -> saucer arrives -> scan -> rebuild -> saucer leaves
     const setEnd = (p) => {
       tele.end = p;
       tele.endT = 0;
     };
     if (tele.end) tele.endT += dt;
-    const T = tele.endT;
+    const T = tele.endT; // time in the phase that was running when this frame began
     if (tele.end === "creak") {
       tele.shake = 0.7 + T;
       if (T > 0.9) setEnd("crash");
@@ -408,6 +424,9 @@
         spawn(true);
       }
     }
+    // A phase may have just changed above, which restarts its clock. Drawing must use the new phase's time,
+    // or the first frame of a phase is drawn with the old phase's (finished) time and things flash out of place.
+    const TD = tele.endT;
     const E = tele.end,
       wreck = E === "crash" || E === "cry" || E === "ufoIn" || E === "scan",
       sad = E === "cry" || E === "ufoIn" || E === "scan";
@@ -418,7 +437,7 @@
     const sy = gy - 46 + tele.drop; // shoulder height; the whole upper body rides on it, so it sinks when the column gives way
     const grow = (tele.size * 10) / FULL,
       bw = Math.round(13 + 2.4 * grow),
-      bh = Math.round(8 + 1.5 * grow); // the bot's body grows with every burger
+      bh = Math.round(8 + 1.5 * grow); // the bot's body grows with every GPU
     const S = [
         { x: fx - 13, y: sy },
         { x: fx + 13, y: sy },
@@ -426,7 +445,7 @@
       mouth = { x: fx, y: sy - 8 - bh + Math.round(bh * 0.65) + 1 };
     const act = active() && !E;
     if (!mouse.down) tele.sel = mouse.x < fx ? 0 : 1; // the cursor picks the nearer arm, but never swaps arms mid-grip
-    const fc = { x: f.x + 3.5, y: f.y + 3 },
+    const fc = { x: f.x + GW / 2, y: f.y + GH / 2 },
       near = tele.sel;
 
     for (let i = 0; i < 2; i++) {
@@ -453,29 +472,39 @@
     }
     const tips = [fk(S[0], tele.arms[0]).t, fk(S[1], tele.arms[1]).t];
 
-    // burger: on the table, in a gripper, being eaten, or gone until the next one drops in
+    // GPU: on the table, in a gripper, being eaten, or gone until the next one drops in
     if (f.state === "held") {
       if (tele.arms[f.held].g < 0.5) {
         f.state = "free";
         f.held = -1;
         f.vy = 0.01;
       } else {
-        f.x = tips[f.held].x - 3;
-        f.y = tips[f.held].y - 3;
-        if (Math.hypot(f.x + 3.5 - mouth.x, f.y + 3 - mouth.y) < 5.5) {
+        f.x = tips[f.held].x - f.ox;
+        f.y = tips[f.held].y - f.oy;
+        // it is eaten once either end (or the middle) reaches the mouth
+        const cy = f.y + GH / 2,
+          reach = Math.min(
+            Math.hypot(f.x - mouth.x, cy - mouth.y),
+            Math.hypot(f.x + GW - mouth.x, cy - mouth.y),
+            Math.hypot(f.x + GW / 2 - mouth.x, cy - mouth.y)
+          );
+        if (reach < 5) {
           f.state = "eating";
           f.t = 0;
+          f.flip = f.x + GW / 2 > mouth.x; // fed from the right: it goes in left end first
         }
       }
     }
     if (f.state === "free") {
       for (let i = 0; i < 2; i++)
-        if (tele.arms[i].g > 0.6 && Math.hypot(tips[i].x - fc.x, tips[i].y - fc.y) < 6) {
+        if (tele.arms[i].g > 0.6 && tips[i].x > f.x - 2 && tips[i].x < f.x + GW + 2 && tips[i].y > f.y - 2 && tips[i].y < f.y + GH + 2) {
           f.state = "held";
           f.held = i;
+          f.ox = clamp(tips[i].x - f.x, 1, GW - 1); // where on the card it was gripped
+          f.oy = clamp(tips[i].y - f.y, 1, GH - 1);
         }
       const onTable = fc.x > fx - 34 && fc.x < fx + 35,
-        floor = (onTable ? ty : gy) - 6;
+        floor = (onTable ? ty : gy) - GH;
       f.vy += 140 * dt;
       f.y += f.vy * dt;
       if (f.y >= floor) {
@@ -485,8 +514,10 @@
       }
       if (f.lost > 1.4) spawn(true);
     } else if (f.state === "eating") {
-      f.x += (mouth.x - 3 - f.x) * ease(dt, 20);
-      f.y += (mouth.y - 2 - f.y) * ease(dt, 20);
+      // slide the card in so its bitten end stays at the mouth
+      const left = gpuLeft(f.bites) / Z;
+      f.x += (mouth.x - (f.flip ? GW - left : left) - f.x) * ease(dt, 20);
+      f.y += (mouth.y - GH / 2 - f.y) * ease(dt, 20);
       f.t += dt;
       if (f.t > 0.3) {
         f.t = 0;
@@ -585,7 +616,9 @@
       } else if (!reduce && now % 4 < 0.12) R(ex + look, ey + 1, ew, 1, pal.botEye);
       else R(ex + look, ey, ew, eh, pal.botEye);
     });
-    const hungry = f.state === "eating" || (f.state !== "gone" && Math.hypot(fc.x - mouth.x, fc.y - mouth.y) < 15);
+    const hungry =
+      f.state === "eating" ||
+      (f.state !== "gone" && Math.min(Math.hypot(f.x - mouth.x, fc.y - mouth.y), Math.hypot(f.x + GW - mouth.x, fc.y - mouth.y)) < 14);
     const mw = 3 + Math.floor(grow / 4),
       mx = fx - Math.floor(mw / 2),
       my = oy + Math.round(bh * 0.65);
@@ -605,7 +638,7 @@
     for (const t of tele.tears) R(t.x, t.y, 1, 2, "#7cc4ff");
 
     for (let i = 0; i < 2; i++) drawArm(S[i], tele.arms[i]);
-    if (f.state !== "gone") burger(f.x, f.y, f.bites);
+    if (f.state !== "gone") gpu(f.x, f.y, f.bites, f.flip);
     for (const b of tele.bits) {
       // wreckage: flies, then lies where it lands
       if (!b.rest) {
@@ -624,7 +657,7 @@
       c.vy += (c.c ? 30 : 160) * dt;
       c.x += c.vx * dt;
       c.y += c.vy * dt;
-      R(c.x, c.y, 1, 1, c.c || BUN);
+      R(c.x, c.y, 1, 1, c.c || CRUMB);
     }
     if (tele.happy > 0) {
       const hx = fx - 2,
@@ -644,11 +677,11 @@
       const hov = { x: fx, y: 14 + (reduce ? 0 : Math.round(Math.sin(now * 3))) };
       let u = hov;
       if (E === "ufoIn") {
-        const k = 1 - Math.pow(1 - clamp(T / 1.3, 0, 1), 3);
+        const k = 1 - Math.pow(1 - clamp(TD / 1.3, 0, 1), 3);
         u = { x: W + 16 + (hov.x - W - 16) * k, y: 12 + (hov.y - 12) * k + Math.sin(k * Math.PI) * 8 };
       }
       if (E === "ufoOut") {
-        const k = Math.pow(clamp(T / 1.0, 0, 1), 2);
+        const k = Math.pow(clamp(TD / 1.0, 0, 1), 2);
         u = { x: hov.x - (hov.x + 18) * k, y: hov.y - 30 * k };
       }
       tele.ufo = u;
@@ -662,7 +695,7 @@
           ctx.fillRect(Math.round(u.x * Z - h * Z) / Z, y, Math.round(h * 2 * Z) / Z, 0.5);
         }
         if (E === "scan") {
-          const p = (T / 0.9) % 2,
+          const p = (TD / 0.9) % 2,
             yb = y0 + Math.round(span * (p < 1 ? p : 2 - p));
           R(Math.round(u.x) - hw(yb), yb, 2 * hw(yb) + 1, 1, "rgba(200,255,238,0.9)");
         } else
@@ -729,7 +762,7 @@
   }
   readPalette();
   resize();
-  // debug hooks: ?fed=N starts with N burgers eaten, ?path=1 scripts a grab-and-feed, ?ff=S fast-forwards S seconds, ?theme=dark|light
+  // debug hooks: ?fed=N starts with N GPUs eaten, ?path=1 scripts a grab-and-feed, ?ff=S fast-forwards S seconds, ?theme=dark|light
   try {
     const q = new URLSearchParams(location.search);
     if (q.get("theme")) {
@@ -742,8 +775,8 @@
         const fx = anchorX() + 8,
           gy = groundY(),
           bh = Math.round(8 + (15 * tele.size) / FULL);
-        const a = { x: fx - 18.5, y: gy - 17 },
-          b = { x: fx - 2, y: gy - 46 - 8 - bh + Math.round(bh * 0.65) },
+        const a = { x: fx - 20, y: gy - 14 - GH / 2 },
+          b = { x: fx - GW / 2 + 2, y: gy - 46 - 8 - bh + Math.round(bh * 0.65) },
           k = clamp((now - 1.4) / 0.9, 0, 1);
         mouse.x = a.x + (b.x - a.x) * k;
         mouse.y = a.y + (b.y - a.y) * k;

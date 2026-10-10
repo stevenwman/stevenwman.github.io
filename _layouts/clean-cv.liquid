@@ -119,46 +119,4 @@ layout: clean
       {% endfor %}
     </section>
   {% endif %}
-
-  {% if r.skills.size > 0 %}
-    <section class="cv-sec">
-      <div class="sec-head"><h2>Skills</h2></div>
-      {% for s in r.skills %}
-        <div class="cv-row">
-          <div class="when">{{ s.name }}</div>
-          <div class="kw">
-            {% for k in s.keywords -%}
-              <span>{{ k }}</span>
-            {%- endfor %}
-          </div>
-        </div>
-      {% endfor %}
-    </section>
-  {% endif %}
-
-  {% if r.interests.size > 0 %}
-    <section class="cv-sec">
-      <div class="sec-head"><h2>Interests</h2></div>
-      {% for s in r.interests %}
-        <div class="cv-row">
-          <div class="when">{{ s.name }}</div>
-          <div class="kw">
-            {% for k in s.keywords -%}
-              <span>{{ k }}</span>
-            {%- endfor %}
-          </div>
-        </div>
-      {% endfor %}
-    </section>
-  {% endif %}
-
-  {% if r.basics.Languages %}
-    <section class="cv-sec">
-      <div class="sec-head"><h2>Languages</h2></div>
-      <div class="cv-row">
-        <div class="when">Spoken</div>
-        <div>{{ r.basics.Languages }}</div>
-      </div>
-    </section>
-  {% endif %}
 </main>
